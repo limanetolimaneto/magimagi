@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} NEW ORIGIN {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+
+    <main>
+        <div class="origin-main-div">
+            <section class="origin-main-section">
+                <div class="origin-main-div-new">
+                    <div id="origin-main-div-new-label">
+                        <label for="new-origin-form-description-label">ADD NEW ORIGIN</label>
+                    </div>
+                    <div>
+                        <label for="new-origin-form-description-id">DESCRIPTION</label><input type="text" id="new-origin-form-description-id">
+                    </div>
+                    <div>
+                        <label for="new-origin-form-email-id">EMAIL</label><input type="text" id="new-origin-form-email-id">
+                    </div>
+                    <div>
+                        <label for="new-origin-form-type-id">TYPE</label><input type="text" id="new-origin-form-type-id">
+                    </div>
+                    <div id="origin-main-div-new-notes">
+                        <label for="new-origin-form-notes-id">NOTES</label><input type="text" id="new-origin-form-notes-id">
+                    </div>
+                    <div id="origin-main-div-new-btn">
+                        <button class="origin-cancel-btn-id" id="origin-cancel-btn-id-id">BACK</button>
+                        <button class="origin-confirm-btn-id"  id="origin-confirm-btn-id-id">CONFIRM</button>
+                    </div>
+                </div>
+                <div class="origin-main-div-list">
+                    <div id="origin-main-div-new-label">
+                        <label for="new-origin-form-description-label">ORIGIN LIST</label>
+                    </div>
+                    {% for o in origins %}
+                        {% if o.id > 1 %}
+                        <hr>
+                        {% endif %}
+                        <div class="origin-list-display">
+                            <div>
+                                <label for="or-id">ID</label>
+                                <input id="or-id" value="{{ o.id }}">
+                            </div>
+                            <div>
+                                <label for="or-desc">DESCRIPTION</label>
+                                <input id="or-desc" value="{{ o.description }}">
+                            </div>
+                            <div>
+                                <label for="or-email">EMAIL</label>
+                                <input id="or-email" value="{{ o.email }}">
+                            </div>
+                            <div>
+                                <label for="or-type">TYPE</label>
+                                <input id="or-type" value="{{ o.type }}">
+                            </div>
+                            <div class="or-notes-div">
+                                <label for="or-notes">NOTES</label>
+                                <input id="or-notes" value="{{ o.notes }}">
+                            </div>
+                        </div>
+                       
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+        
+    </main>
+       
+    <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+        {% include 'footer.html' %}
+
+
+    <script src="{{url_for('static',filename='js/origins.js')}}" type="module"></script>
+{% endblock %}

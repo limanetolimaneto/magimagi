@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} NEW READER {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+
+    <main>
+        <div class="reader-main-div">
+            <section class="reader-main-section">
+               <div class="origin-main-div-new">
+                    <div id="origin-main-div-new-label">
+                        <label for="new-origin-form-description-label">ADD NEW READER</label>
+                    </div> 
+                    <div class="new-reader-desc-50">
+                        <label for="new-origin-form-description-id">DESCRIPTION</label><input type="text" id="new-reader-form-description-id">
+                    </div>
+                    <div class="new-reader-desc-50">
+                        <label for="new-origin-form-email-id">EMAIL</label><input type="text" id="new-reader-form-email-id">
+                    </div>
+                    <div id="origin-main-div-new-notes">
+                        <label for="new-origin-form-notes-id">NOTES</label><input type="text" id="new-reader-form-notes-id">
+                    </div>
+                    <div id="origin-main-div-new-btn">
+                        <button class="reader-cancel-btn-id" id="reader-cancel-btn-id-id">BACK</button>
+                        <button class="reader-confirm-btn-id" id="reader-confirm-btn-id-id">CONFIRM</button>
+                    </div>
+               </div>
+               <div class="origin-main-div-list">
+                    <div id="origin-main-div-new-label">
+                        <label for="new-origin-form-description-label">READER LIST</label>
+                    </div> 
+                {% if readers %}
+                    {% for r in readers %}
+                        
+                        <div class="read-div-nest">
+                            <div class="reader-30"> 
+                                <label for="read-id">ID</label>
+                                <input type="text" id="read-id" value="{{ r.id }}">
+                            </div>
+                            <div class="reader-30"> 
+                                <label for="read-desc">DESCRIPTION</label>
+                                <input type="text" id="read-desc" value="{{ r.description }}">
+                            </div>
+                            <div class="reader-30"> 
+                                <label for="read-email">EMAIL</label>
+                                <input type="text" id="read-email" value="{{ r.email }}">
+                            </div>
+                            <div class="reader-100">
+                                <label for="reader-notes-100">NOTES</label>
+                                <input id="reader-notes-100" value="{{ r.notes }}">
+                            </div>
+                            
+                        </div>
+                        {% if not loop.last %}
+                            <br><hr><br>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+               </div>
+            </section>
+        </div>
+        
+    </main>
+       
+   <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+        {% include 'footer.html' %}
+
+
+    <script src="{{url_for('static',filename='js/readers.js')}}" type="module"></script>
+{% endblock %}

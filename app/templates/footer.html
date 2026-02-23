@@ -1,0 +1,16 @@
+<footer class="footer-template">
+    <div>
+
+    </div>
+    <div>
+        <p>MagiMagi v1.2.25 | MIT License | © 2025 MagiMagi</p>
+    </div>
+    <div>
+        {% if user_authenticated() %}
+        <p><i>You are logged in as: </i> <b>{{ user_email }}</b></p>
+        {% else %}
+        <p>alpha@version</p>
+        {% endif %}
+    </div>
+    
+</footer>

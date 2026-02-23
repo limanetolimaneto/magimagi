@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} DOCUMENTATION {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+
+    <!-- ======================================================
+         MAIN CONTENT
+         ====================================================== -->
+    <main>
+        <div class="doc-main-div"></div>
+        <section class="doc-main-section">
+            <!-- Main documentation title -->
+            <h1>DOCUMENTATION</h1>
+            <h2>Magimagi Task Manager</h2>
+
+            <!-- Display all versions and changes dynamically from Flask -->
+            <div class="changes">
+                {% for d in doc %}
+                    {% for key, value in d.items() %}
+                        <!-- Display version number -->
+                        <p class="version">Version: {{ key }}</p>
+                        {% for dv in value %}
+                            {% for key, value in dv.items() %}
+                                <!-- Display category or section name -->
+                                <p class="version-content">{{ key }}</p>
+                                {% for vc in value %}
+                                    <!-- Display individual change item -->
+                                    <p class="version-content-item">{{ vc }}</p>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+                <hr class="end-version">
+            </div>
+
+            <!-- Back button to return to previous page -->
+            <div class="back-button">
+                <button class="back" id="button-back-doc">
+                    BACK
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================================================
+         FOOTER
+         Displays logged-in user's email if authenticated
+         ====================================================== -->
+    <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+        {% include 'footer.html' %}
+
+
+
+    <!-- ======================================================
+         INLINE STYLES SPECIFIC TO DOC PAGE
+         ====================================================== -->
+    <style>
+        .back-button{
+            text-align: center;
+        }
+        .back{
+            margin: auto;
+            padding: 10px 20px;
+            border-radius: 6px;
+            color: aliceblue;
+            background-color: rgb(1, 58, 1);
+        }
+        .end-version{
+            width: 90%;
+            margin: 40px auto;
+        }
+        p.version, p.version-content{
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+        p.version-content{
+            padding-left:20px;
+            margin: 20px auto;
+        }
+        p.version-content-item{
+            padding-left:40px;
+        }
+        .changes{
+            background-color: darkgrey;
+            color: rgb(1, 58, 1);
+            padding: 10px;
+            margin: 10px auto;
+        }
+        .doc-main-section{
+            width: 100%;
+            background-color: cadetblue;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+    </style>
+
+    <!-- Page-specific JavaScript -->
+    <script src="{{url_for('static',filename='js/doc.js')}}" type="module"></script>
+{% endblock %}

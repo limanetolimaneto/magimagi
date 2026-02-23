@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} USERS {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+    
+
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+        
+
+    <main>
+        <div class="leader-main-div">
+            <section class="leader-main-section">
+                {% if user.profile == 'author' %}
+                    <div class="origin-main-div-new">
+                        <div id="origin-main-div-new-label">
+                            <label for="new-origin-form-description-label">ADD A NEW USER</label>
+                        </div> 
+                        <div>
+                            <label for="user-ipt-name-id">NAME</label>
+                            <input type="text" id="user-ipt-name-id">
+                        </div>
+                        <div>
+                            <label for="user-ipt-email-id">EMAIL</label>
+                            <input type="email" id="user-ipt-email-id">
+                        </div>
+                        <div>
+                            <label for="user-ipt-password-id">PASSWORD</label>
+                            <input type="password" id="user-ipt-password-id">
+                        </div>
+                        <div>
+                            <label for="user-slt-profile-id">PROFILE</label>
+                            <select id="user-slt-profile-id">
+                                <option value="author">AUTHOR</option>
+                                <option value="coauthor">CO-AUTHOR</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="user-slt-coauthor-id">CO-AUTHOR</label>
+                            <select id="user-slt-coauthor-id">
+                                <option value="">CHOOSE A CO-AUTHOR</option>
+                                {% for u in users %}
+                                    {% if u.id != user.id %}
+                                        {% if u.profile =='coauthor' %}                            
+                                            <option value="{{u.id}}">{{u.name}}</option>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div id="origin-main-div-new-btn">
+                            <button class="leader-cancel-btn-id" id="user-cancel-btn-id-id">BACK</button>
+                            <button class="leader-confirm-btn-id" id="user-confirm-btn-id-id">CONFIRM</button>
+                        </div>
+                    </div>
+                {% endif %}
+
+                    <div class="origin-main-div-list">
+                        <div id="origin-main-div-new-label">
+                            {% if user.profile == 'author' %}
+                            <label for="new-origin-form-description-label">USERS LIST</label>
+                            {% else %}
+                            <label for="new-origin-form-description-label">MY PROFILE</label>
+                            {% endif %}    
+                        </div> 
+                        {% if user.profile == 'author' %}
+                            {% for u in users %}
+                                <div class="origin-list-display">
+                                    <div>
+                                        <label for="leader-id-id">ID</label>
+                                        <input value="{{ u.id }}" id="din_id_{{u.id}}" disabled>
+                                    </div>
+                                    <div>
+                                        <label for="leader-name-id">NAME</label>
+                                        <input value="{{ u.name }}" id="din_name_{{u.id}}" disabled>
+                                    </div>
+                                    <div>
+                                        <label for="leader-email-id">EMAIL</label>
+                                        <input value="{{ u.email }}" id="din_email_{{u.id}}" disabled>
+                                    </div>
+                                    <div>
+                                        <label for="leader-email-id">PROFILE</label>
+                                        <input value="{{ u.profile }}" id="din_profile_{{u.id}}" disabled>
+                                    </div>
+                                    <div>
+                                        <label for="leader-coauthor-id">CO-AUTHOR</label>
+                                        <input value="{{ u.coauthor }}" id="din_coauthor_{{u.id}}" disabled>
+                                    </div>
+                                    <div>
+                                        <button class="edit-user" name="edit-user-id" id="edit-user-id" value="{{u.id}}">EDIT USER</button>
+                                    </div>
+                                </div>
+                                {% if not loop.last %}
+                                    <br><hr><br>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <div class="origin-list-display">
+                                <div>
+                                    <label for="leader-id-id">ID</label>
+                                    <input value="{{ user.id }}" id="din_id_{{user.id}}" disabled>
+                                </div>
+                                <div>
+                                    <label for="leader-name-id">NAME</label>
+                                    <input value="{{ user.name }}" id="din_name_{{user.id}}" disabled>
+                                </div>
+                                <div>
+                                    <label for="leader-email-id">EMAIL</label>
+                                    <input value="{{ user.email }}" id="din_email_{{user.id}}" disabled>
+                                </div>
+                                    <input type="hidden" value="{{ user.profile }}" id="din_profile_{{user.id}}">
+                                    <input type="hidden" value="{{ user.coauthor }}" id="din_coauthor_{{user.id}}">
+                            </div>
+                            <div>
+                                <button class="leader-cancel-btn-id" id="user-cancel-btn-id-id">BACK</button>
+                                <button class="edit-user" name="edit-user-id" id="edit-user-id" value="{{user.id}}">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    EDIT MY PROFILE
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                
+            </section>
+        </div>
+        
+        
+    </main>
+        <div id="div-edit-user-hidden-main">
+            <div id="div-edit-user-form">
+                <input type="hidden" id="id-edit-id">
+                <div>
+                    <label for="id-edit-name">NAME</label>
+                    <input type="text" id="id-edit-name">
+                </div>
+                <div>
+                    <label for="id-edit-email">EMAIL</label>
+                    <input type="email" id="id-edit-email">
+                </div>
+                <div>
+                    <label for="id-edit-password">PASSWORD</label>
+                    <input type="password" id="id-edit-password" value="">
+                </div>
+                {% if user.profile == 'author' %}
+                <div>
+                    <label for="id-edit-profile">PROFILE</label>
+                    <select id="id-edit-profile">
+                        <option value="author">AUTHOR</option>
+                        <option value="coauthor">CO-AUTHOR</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="id-edit-coauthor">COAUTHOR</label>
+                    <select id="id-edit-coauthor">
+                        <option value="">CHOOSE A CO-AUTHOR</option>
+                        {% for ed in users %}
+                        {% if ed.profile == 'coauthor' %}
+                        <option value="{{ed.id}}">{{ed.name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                {% else %}
+                <input type="hidden" id="id-edit-profile">
+                <input type="hidden" id="id-edit-coauthor">
+                {% endif %}
+                <div class="div-btn-confirm-cancel-class">
+                    <button class="div-btn-cancel-class" id="div-edit-btn-cancel">BACK</button>
+                    <button class="div-btn-confirm-class" id="div-edit-btn-confirm">CONFIRM</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+        {% include 'footer.html' %}
+
+
+    
+    <script src="{{url_for('static',filename='js/users.js')}}" type="module"></script>
+{% endblock %}

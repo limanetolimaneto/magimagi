@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} LEADER {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+
+    <!-- ======================================================
+         MAIN CONTENT
+         ====================================================== -->
+    <main>
+        <div class="leader-main-div">
+            <section class="leader-main-section">
+
+                <!-- ======================================================
+                     NEW LEADER FORM
+                     ====================================================== -->
+                <div class="origin-main-div-new">
+                    <div id="origin-main-div-new-label">
+                        <!-- Title for setting a new leader -->
+                        <label for="new-origin-form-description-label">SET A NEW LEADER</label>
+                    </div> 
+                    <div>
+                        <!-- Current leader email (disabled input) -->
+                        <label for="new-origin-form-description-id">EMAIL ADDRESS</label>
+                        <input type="text" id="leader-email-address-id" value="{{leader}}" disabled>
+                    </div>
+                    <div id="origin-main-div-new-btn">
+                        <!-- Back and Confirm buttons -->
+                        <button class="leader-cancel-btn-id" id="leader-cancel-btn-id-id">BACK</button>
+                        <button class="leader-confirm-btn-id" id="leader-confirm-btn-id-id">CONFIRM</button>
+                    </div>
+                </div>
+
+                <!-- ======================================================
+                     USERS LIST
+                     ====================================================== -->
+                <div class="origin-main-div-list">
+                    <div id="origin-main-div-new-label">
+                        <label for="new-origin-form-description-label">USERS LIST</label>
+                    </div> 
+
+                    <!-- Loop through all users and display authors only -->
+                    {% for u in users %}
+                        {% if u.profile == 'author' %}
+                            <div class="origin-list-display">
+                                <div>
+                                    <label for="leader-id-id">ID</label>
+                                    <input id="leader-id-id" value="{{ u.id }}">
+                                </div>
+                                <div>
+                                    <label for="leader-name-id">NAME</label>
+                                    <input id="leader-name-id" value="{{ u.name }}">
+                                </div>
+                                <div>
+                                    <label for="leader-email-id">EMAIL</label>
+                                    <input id="leader-email-id" value="{{ u.email }}">
+                                </div>
+                                <div>
+                                    <!-- Radio button to select this user as new leader -->
+                                    <label for="leader_value_{{ u.id }}" class="custom-leader-label" id="label_leader_value_{{ u.id }}">
+                                        SET {{ u.name }}
+                                    </label>
+                                    <input type="radio" name="leader-radio-name" class="custom-leader-radio" id="leader_value_{{ u.id }}" value="{{ u.email }}">
+                                </div>
+                            </div>
+
+                            <!-- Add separator if not last item -->
+                            {% if not loop.last %}
+                                <br><hr><br>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+        {% include 'footer.html' %}
+
+    <!-- ======================================================
+         PAGE-SPECIFIC JAVASCRIPT
+         ====================================================== -->
+    <script src="{{url_for('static',filename='js/leader.js')}}" type="module"></script>
+{% endblock %}

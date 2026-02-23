@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} TASKS {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+    <!-- ========================================================================================== -->
+    <!-- ===============================  FORM => ADD NEW TASK  =================================== -->
+    <!-- V2 => STATUS == solved -> comnpleted -->
+   
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+
+
+    <main>
+        <div class="task-list-div" >
+            <!-- HIDDEN DIV ORIGINS -->
+            <div class="hidden-div-origins" id="hidden-div-origins-id">
+                <p>
+                    <input type="radio" name="origins" id="origins-0" value='0' data-detail='NONE' >
+                    <b id="origin-none-id"></b><i></i><label></label>
+                </p>
+                {% for o in origins %}
+                    <p>
+                        <input type="radio" name="origins" id='origin-{{ o.id }}' value="{{ o.id }}" data-detail="{{ o.description }}">
+                        <b>{{ o.description }}</b><i>{{ o.email }}</i><label>{{ o.type }}</label>
+                    </p>
+                {% endfor %}
+                <p>
+                    <button class="hidden-confirm-origin-btn" id="hidden-confirm-origin-btn-id">COMFIRM</button>
+                </p>
+            </div>
+            <!-- HIDDEN DIV STATUS -->
+            <div class="hidden-div-status" id="hidden-div-status-id">
+                <p>
+                    <label>
+                        <input type="radio" name="status" id="skatch-status" value='draft'>
+                        <!-- V2 skatch -> draft -->
+                        DRAFT
+                    </label>
+                    <label>
+                        <input type="radio" name="status" id="started-status" value='in progress'>
+                        IN PROGRESS
+                    </label>
+                    <label>
+                        <input type="radio" name="status" id="stantingby-status" value='standing by'>
+                        STANDING BY
+                    </label>
+                    <label>
+                        <input type="radio" name="status" id="solved-status" value='solved'>
+                        COMPLETED
+                    </label>
+                    <label>
+                        <input type="radio" name="status" id="canceled-status" value='canceled'>
+                        CANCELED
+                    </label>
+                </p>
+                
+                <p>
+                    <button class="hidden-confirm-status-btn" id="hidden-confirm-status-btn-id">COMFIRM</button>
+                </p>
+            </div>
+            <!-- HIDDEN DIV EDITABLED BY -->
+            <div class="hidden-div-editable" id="hidden-div-editable-id">
+                <label for="all-none-check-users-id" class="all-none-check-users-label-class" id="all-none-editable-label-id">
+                    <input type="checkbox" id="all-none-check-users-id">
+                </label>
+                {% for u in users %}
+                {% if(u.id != user_id) and (u.profile=='author') %}
+                <p>
+                    <input type="checkbox" id="id-editable-{{ u.id }}" value="{{u.id}}">
+                    <b>{{ u.name }}</b><i>{{ u.email }}</i><label>{{ u.profile }}</label>
+                </p>
+                {% endif %}
+                {% endfor %}
+                <p>
+                    <button class="hidden-confirm-editable-btn" id="hidden-confirm-editable-btn-id">COMFIRM</button>
+                </p>
+            </div>
+            <!-- HIDDEN DIV VISIBILITY -->
+            <div class="hidden-div-visibility" id="hidden-div-visibility-id">
+                <label for="all-none-check-visibility-id" class="all-none-check-visibility-label-class" id="all-none-visibility-label-id">
+                    <input type="checkbox" id="all-none-check-visibility-id">
+                </label>
+                {% for v in users %}
+                {% if(v.id != user_id) and (v.profile=='author') %}
+                <p>
+                    <input type="checkbox" id="id-visibility-{{ v.id }}" value="{{ v.id }}">
+                    <b>{{ v.name }}</b><i>{{ v.email }}</i><label>{{ v.profile }}</label>
+                </p>
+                {% endif %}
+                {% endfor %}
+                <p>
+                    <button class="hidden-confirm-visibility-btn" id="hidden-confirm-visibility-btn-id">COMFIRM</button>
+                </p>
+            </div>
+            <!-- HIDDEN DIV ALLOW READERS -->
+            <div class="hidden-div-readers" id="hidden-div-reader-id">
+                <label for="all-none-check-reader-id" class="all-none-check-reader-label-class" id="all-none-reader-label-id">
+                    <input type="checkbox" id="all-none-check-reader-id">
+                </label>
+                {% for r in readers %}
+                <p>
+                    <input type="checkbox" id="id-reader{{ r.id }}" value="{{ r.id }}">
+                    <b>{{ r.description }}</b><i>{{ r.email }}</i>
+                </p>
+                {% endfor %}
+                <p>
+                    <button class="hidden-confirm-reader-btn" id="hidden-confirm-reader-btn-id">COMFIRM</button>
+                </p>
+            </div>
+
+            <section class="task-section" id="task-section-id">
+                <!-- DATE - DEADLINE - ORIGIN - STATUS -->
+                <div class="task-input-div-nest">
+                    <div class="task-inputs-div">
+                        <label for="task-origin-date-id">DATE/TIME</label>
+                        <input type="datetime-local" id="task-origin-date-id" class="input-datetime" lang="en-US">
+                    </div>
+                    <div class="task-inputs-div">
+                        <label for="task-deadline-id">DEADLINE</label>
+                        <input type="date"  class="input-datetime" id="task-deadline-id">
+                    </div>
+                    <div class="task-inputs-div">
+                        <label for="task-btn-origins-id">ORIGIN</label>
+                        <button class="task-btn-origins" id="task-btn-origins-id"></button>
+                    </div>
+                    <div class="task-inputs-div">
+                        <label for="task-btn-status-id">STATUS</label>
+                        <button class="task-btn-status" id="task-btn-status-id"></button>
+                    </div>
+                </div>
+                <!-- DESCRIPTION -->
+                <div class="task-inputs-div">
+                    <label for="task-description-id">DESCRIPTION</label>
+                    <textarea class="task-textarea" id="task-description-id"></textarea> 
+                </div>
+                <!-- INSTRUCTIONS -->
+                <div class="task-inputs-div">
+                    <label for="task-instructions-id">INSTRUCTIONS</label>
+                    <textarea class="task-textarea" id="task-instructions-id"></textarea> 
+                </div>
+                <!-- COMMENTS -->
+                <div class="task-inputs-div">
+                    <label for="task-comments-id">COMMENTS</label>
+                    <textarea class="task-textarea" id="task-comments-id"></textarea> 
+                </div>
+                <!-- EDITABLE - VISIBILITY - READER -->
+                <div class="task-input-div-nest">
+                    <div class="task-inputs-div">
+                        <label for="task-btn-editable-id">EDITABLE BY</label>
+                        <button class="task-btn-editable" id="task-btn-editable-id"></button>
+                    </div>
+                    <div class="task-inputs-div">
+                        <label for="task-btn-visibility-id">VISIBILITY</label>
+                        <button class="task-btn-visibility" id="task-btn-visibility-id"></button>
+                    </div>
+                    <div class="task-inputs-div">
+                        <label for="task-btn-readers-id">ALLOW READERS</label>
+                        <button class="task-btn-readers" id="task-btn-reader-id"></button>
+                    </div>
+                </div>
+                <!-- REMIND ME - COAUTHOR - LEADER -->
+                <div class="task-input-div-nest">
+                    <div class="task-inputs-div">
+                        <label for="task-coauthor-id"> CO AUTHOR</label>
+                        <div class="task-coauthor-leader"><input type="checkbox" id="task-coauthor-id"> INCLUDE</div>
+                    </div>
+                    <div class="task-inputs-div">
+                        <label for="task-leader-id"> LEADER</label>
+                        <div class="task-coauthor-leader"><input type="checkbox" id="task-leader-id">SHARE TASK</div>
+                    </div>
+                    <div class="task-inputs-div">
+                        <label for="task-remindme-date-id">REMIND ME ON</label>
+                        <input type="date" id="task-remindme-id" class="input-datetime">
+                    </div>
+                </div>
+                <div class="task-input-div-nest">
+                    <button class="task-quit-btn" id="task-quit-btn-id">BACK</button>
+                    <button class="task-save-btn" id="task-save-btn-id">SAVE TASK</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    <div id="popup-id-back">
+        <div class="popup-class" id="popup-id">
+            <div>
+                <label id="popup-title-label"></label>
+                <p id="popup-title"></p>
+            </div>
+            <div>
+                <label id="popup-message-label"></label>
+                <p id="popup-message"></p>
+            </div>
+            <div>
+                <button class="popup-button-class" id="popup-button">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+        {% include 'footer.html' %}
+
+
+    <script src="{{url_for('static',filename='js/tasks.js')}}" type="module"></script>
+{% endblock %}

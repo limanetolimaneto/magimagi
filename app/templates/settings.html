@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} SETTINGS {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+        
+    <main>
+        <div class="leader-main-div">
+            <section class="leader-main-section">
+                <!-- DIV SETTINGS MENU -->
+                <div class="settings-menu-div">
+                    
+                    <button type="button" class="task-menu-btn" id="setting-btn-user">USERS</button>
+
+                    <button type="button" class="task-menu-btn" id="setting-btn-doc">DOCUMENTATION</button>
+                    {% if user.profile == 'author' %}
+                    <button type="button" class="task-menu-btn" id="setting-btn-leader">LEADER</button>
+                    <button class="whatsapp-btn" id="setting-btn-whatsapp">WEB WHATSAPP</button>
+                    <input type="hidden" id="whatsapp-user-id" value="{{ user.id }}">
+                    {% endif %}
+                </div>
+                <div class="div-button-back-settings">
+                    <button type="button" class="task-menu-btn" id="setting-btn-desktop">BACK</button>
+                </div>
+                
+            </section>
+        </div>
+        
+    </main>
+   
+
+    <div id="popup-id-back">
+        <div class="popup-class" id="popup-id">
+            <div>
+                <!-- Main title -->
+                <label id="popup-title-label"></label>
+                <!-- Subtitle -->
+                <p id="popup-title"></p>
+            </div>
+            <div id='qr-code-id'>
+                <label id="popup-message-label"></label>
+                <p id="popup-message"></p>
+            </div>
+            <div class="div-btn-stt-class" id="div-btn-stt">
+                
+            </div>
+            <!-- It will append the restart button div dynamically -->
+        </div>
+    </div>
+
+        <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+        {% include 'footer.html' %}
+
+ 
+
+    <style>
+       .whatsapp-btn {
+            background-color: #25D366; /* Verde oficial do WhatsApp */
+            color: white;
+            padding: 12px 24px;
+            margin-top: 4px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.486);
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #1ebe57;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Opcional: ícone do WhatsApp */
+        .whatsapp-btn::before {
+            content: "📱"; /* Pode trocar por um SVG do WhatsApp se quiser */
+            /* font-size: 18px; */
+        }
+
+        .div-button-back-settings{
+            margin-top: 50px;
+        }
+    </style>
+
+    <script src="{{url_for('static',filename='js/settings.js')}}" type="module"></script>
+{% endblock %}

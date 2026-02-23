@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} DESKTOP {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+
+
+    <!-- ========================================================================================== -->
+    <!-- ============================  MAIN PAGE => LIST ALL TASKS  =============================== -->
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+
+    <main>
+        <!-- ======================================================
+             MENU DIV
+             Settings button and logout
+             ====================================================== -->
+        <div class="task-menu-div">
+            <button type="button" class="task-menu-btn" id="settings-new-btn-id">SETTINGS</button>
+            <button class="logout-btn-class" id="logout-btn-id">LOGOUT</button>
+        </div>
+
+        <!-- ======================================================
+             FILTER DIVS
+             Multiple filters for tasks (status, date range, deadline, origin, editable)
+             ====================================================== -->
+        <div class="filter-div-main">
+            <p><button class="filter-btn-class" id="filter-btn-id">FILTER</button></p>
+
+            <!-- Status filter -->
+            <div class="filter-div-nest">
+                <div class="filter-div-status">
+                    <select name="" id="filter-status-id">
+                        <option value="">ALL STATUS</option>
+                        <option value="in progress">IN PROGRESS</option>
+                        <option value="standing by">STANDING BY</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Date range filter -->
+            <div class="filter-div-nest">
+                <div class="filter-div-date">
+                    <p><input type="checkbox" name="date-range" id="filter-daterange-input-id">RANGE</p>
+                    <div id="filter-daterange-div-id">
+                        FROM: <input type="date" id="filter-daterange-from-input-id"><br>
+                        TO: <input type="date" id="filter-daterange-to-input-id">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deadline filter -->
+            <div class="filter-div-nest">
+                <div class="filter-div-deadline">
+                    <p><input type="checkbox" id="filter-deadline-input-id">DEADLINE</p>
+                    <div id="filter-deadline-div-id">
+                        UNTIL: <input type="date" id="filter-deadline-until-input-id">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Origin filter -->
+            <div class="filter-div-nest">
+                <div class="filter-div-origin">
+                    <p><input type="checkbox" id="filter-origin-input-id">ORIGIN</p>
+                    <div id="filter-origin-div-id">
+                        <select id="filter-origin-select-id">
+                            <option value="">ALL</option>
+                            {% for o in origins %}
+                                <option value="{{o.id}}">{{o.description}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editable filter -->
+            <div class="filter-div-nest">
+                <div class="filter-div-editable">
+                    <p><input type="checkbox" id="filter-editable-input-id">EDITABLE</p>
+                    <div id="filter-editable-div-id">
+                        <select id="filter-editable-select-id">
+                            <option value="">ALL</option>
+                            {% for e in users %}
+                                {% if e.id != user_id %}
+                                    <option value="{{e.id}}">{{e.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================
+             TASK LIST
+             Displays tasks with collapsible details for coauthors
+             ====================================================== -->
+        <div class="task-list-div">
+            <section class="task-section" id="task-section-id">
+                <button class="open-all-tasks-btn-class" id="open-all-tasks-btn-id">OPEN ALL TASKS</button>
+                <button class="close-all-tasks-btn-class" id="close-all-tasks-btn-id">CLOSE ALL TASKS</button>
+                <div class="task-list-class-div">
+                    <table class="taks-list-table">
+                        <tbody>
+                            <!-- Hidden objects passed from backend -->
+                            <input type="hidden" id="all-users-object" value="{{users}}">
+                            <input type="hidden" id="all-readers-object" value="{{readers}}">
+                            <input type="hidden" id="all-coauthors-object" value="{{coauthors}}">
+
+                            {% for t in tasks %}
+                                {% if t.status != 'canceled' and t.status != 'draft' and t.status != 'completed' %}
+                                    <!-- Task row -->
+                                    <tr>
+                                        <td class="display-class-td" id="{{t.id}}_{{t.status}}">
+                                            <!-- Short view of task -->
+                                            <div class="display-task-div" id="display-taks-div-id-{{t.status | replace(' ', '')}}">
+                                                <div class="short-task-div-class" id="short-task-div-id_{{t.id}}">
+                                                    <div class="short-task-div-2-class" id="legend-btn-{{t.status | replace(' ', '')}}-id">
+                                                        <b>{{ t.id }} - </b>
+                                                        <label>{{ t.description }}</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Full task details, collapsible -->
+                                                <div class="full-task-div-class" id="full-task-div-id_{{t.id}}">
+                                                    <button type="button" value="{{t.id}}" class="full-hide-btn" id="legend-btn-{{t.status | replace(' ', '')}}-id">
+                                                        CLOSE TASK
+                                                    </button>
+
+                                                    <!-- Task info (ID, Date, Time, Deadline, Origin, Status) -->
+                                                    <div class="display-date-time-deadline-origin-status">
+                                                        <div id="legend-btn-{{t.status | replace(' ', '')}}-id"><label>ID</label><label id="set_{{t.id}}_id">{{ t.id }}</label></div>
+                                                        <div id="legend-btn-{{t.status | replace(' ', '')}}-id"><label>ON</label><label id="set_{{t.id}}_date">{{ t.origin_date }}</label></div>
+                                                        <div id="legend-btn-{{t.status | replace(' ', '')}}-id"><label>AT</label><label id="set_{{t.id}}_time">{{ t.origin_time }}</label></div>
+                                                        <div id="legend-btn-{{t.status | replace(' ', '')}}-id"><label>UNTIL</label><label id="set_{{t.id}}_deadline">{{ t.deadline }}</label></div>
+                                                        <div id="legend-btn-{{t.status | replace(' ', '')}}-id"><label>FROM</label><label id="set_{{t.id}}_origin">{{ t.origin_name }}</label></div>
+                                                        <div class="display-status"><label>{{ t.status }}</label></div>
+                                                    </div>
+
+                                                    <!-- Task description and instructions -->
+                                                    <div class="display-description">
+                                                        <label>DESCRIPTION</label>
+                                                        <p id="set_{{t.id}}_description">{{ t.description }}</p>
+                                                    </div>
+                                                    <div class="display-instructions">
+                                                        <label>INSTRUCTIONS</label>
+                                                        <p id="set_{{t.id}}_instructions">{{ t.instructions }}</p>
+                                                    </div>
+
+                                                    <!-- Task comments -->
+                                                    <div class="display-comments">
+                                                        <label>COMMENTS</label>
+                                                        <details>
+                                                            <summary class="summary-commbody">OPEN COMMENTS</summary>
+                                                            {% for comm in t.comments %}
+                                                                <p class="commtop">{{ comm.commTop }}</p>
+                                                                <p class="commbody">{{ comm.commBody }}</p>
+                                                            {% endfor %}
+                                                        </details>
+                                                        <hr class="hrcom">
+                                                    </div>
+
+                                                    <!-- Editable / Visibility / Readers -->
+                                                    <div class="display-editable-visibility-reader">
+                                                        <div>
+                                                            {% if t.editable %}
+                                                                <label class="editable-visibility-reader">EDITABLE BY</label><br>
+                                                                <input type="hidden" id="set_{{t.id}}_editableName" value="{{t.editableName}}">
+                                                                {% for e in t.editableName %}
+                                                                    <label>{{ e }}</label><br>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <input type="hidden" id="set_{{t.id}}_editableName" value="">
+                                                                <p>LOCKED</p>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div>
+                                                            {% if t.visibility %}
+                                                                <label class="editable-visibility-reader">VISIBLE TO</label><br>
+                                                                <input type="hidden" id="set_{{t.id}}_visibilityName" value="{{t.visibilityName}}">
+                                                                {% for e in t.visibilityName %}
+                                                                    <label>{{ e }}</label><br>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <input type="hidden" id="set_{{t.id}}_visibilityName" value="">
+                                                                <p>PRIVATE</p>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div>
+                                                            {% if t.readers %}
+                                                                <label class="editable-visibility-reader">READERS</label><br>
+                                                                <input type="hidden" id="set_{{t.id}}_readerName" value="{{t.readerName}}">
+                                                                {% for e in t.readerName %}
+                                                                    <label>{{ e }}</label><br>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <input type="hidden" id="set_{{t.id}}_readerName" value="">
+                                                                <p>NO READERS</p>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Respond button -->
+                                                    <button type="button" class="task-update-btn" name="task-update-btn-name" value="{{t.id}}" id="legend-btn-{{t.status | replace(' ', '')}}-id">
+                                                        RESPOND
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ======================================================
+         TASK LEGENDS
+         Display color-coded legend for task statuses
+         ====================================================== -->
+    <div class="task-legend-div">
+        <label class="legend-btn-skatch" id="legend-btn-skatch-id">DRAFT
+            <button class="btn-hide-show-stt-class" id="btn-hide-show-stt-skatch-id">HIDE</button>
+        </label>
+        <label class="legend-btn-started" id="legend-btn-started-id">IN PROGRESS
+            <button class="btn-hide-show-stt-class" id="btn-hide-show-stt-started-id">HIDE</button>
+        </label>
+        <label class="legend-btn-responded" id="legend-btn-responded-id">RESPONDED
+            <button class="btn-hide-show-stt-class" id="btn-hide-show-stt-responded-id">HIDE</button>
+        </label>
+        <label class="legend-btn-standingby" id="legend-btn-standingby-id">STANDING BY
+            <button class="btn-hide-show-stt-class" id="btn-hide-show-stt-standingby-id">HIDE</button>
+        </label>
+        <label class="legend-btn-solved" id="legend-btn-solved-id">COMPLETED
+            <button class="btn-hide-show-stt-class" id="btn-hide-show-stt-solved-id">HIDE</button>
+        </label>
+        <label class="legend-btn-canceled" id="legend-btn-canceled-id">CANCELED
+            <button class="btn-hide-show-stt-class" id="btn-hide-show-stt-canceled-id">HIDE</button>
+        </label>
+    </div>
+
+    <!-- ======================================================
+         TASK COMMENT / RESPONSE POPUP
+         Allows user to type comment or response
+         ====================================================== -->
+    <div class="copage-update-nest-back-class" id="copage-update-nest-back-id">
+        <div class="copage-update-nest-class" id="copage-update-nest-id">
+            <div class="copage-update-divtop">
+                <label for="copage-update-ipttop">TYPE YOUR COMMENT RELATED TO FOLLOWING TASK </label>
+                <input id="copage-update-ipttop" disabled>
+            </div>
+            <div class="copage-update-divtextarea">
+                <textarea class="copage-update-textarea-class" id="copage-update-textarea-id"></textarea>
+            </div>
+            <div class="copage-update-divbutton">
+                <button class="update-form-cancel" id="copage-update-btnback-id">BACK</button>
+                <button class="update-form-confirm" id="copage-update-btnconfirm-id">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================
+         HIDDEN POPUP
+         Used for notifications/messages
+         ====================================================== -->
+    <div id="popup-id-back">
+        <div class="popup-class" id="popup-id">
+            <div>
+                <label id="popup-title-label"></label>
+                <p id="popup-title"></p>
+            </div>
+            <div>
+                <label id="popup-message-label"></label>
+                <p id="popup-message"></p>
+            </div>
+            <div class="div-btn-stt-class" id="div-btn-stt">
+            </div>
+        </div>
+    </div>
+
+      <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+        {% include 'footer.html' %}
+
+    <!-- Main JS for handling task interactions -->
+    <script src="{{url_for('static',filename='js/mainTasksCoauthor.js')}}" type="module"></script>
+{% endblock %}

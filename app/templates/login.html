@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+<!-- == PAGE TITLE == -->
+{% block title %} LOGIN {% endblock %}
+
+<!-- == PAGE CONTENT == -->
+{% block content %}
+
+    <!-- ======================================================
+        PAGE HEADER 
+        import header template
+        Displays logo and title
+        ====================================================== -->
+        {% include 'header.html' %}
+
+    <!-- ======================================================
+         MAIN SIGN-IN FORM
+         ====================================================== -->
+    <main>
+        <div class="signin-div" id="signin-div-id">
+            <section class="login-section">
+                <!-- Input for email -->
+                <input type="email" class="auth-input" id="login-username" placeholder="email">
+                <!-- Input for password -->
+                <input type="password" class="auth-input" id="login-password" placeholder="password">
+                <!-- Sign In button -->
+                <button id="signin-btn">SIGN IN</button>
+                <!-- Optional Sign Up button (currently commented) -->
+                <!-- <button id="signup-btn">SIGN UP</button> -->
+            </section>
+            <div class="button-back-login-page">
+                <button class="login-back-button-class" id="back-home-button">BACK</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ======================================================
+         SYSTEM UPDATES NOTIFICATION
+         ====================================================== -->
+    <div class="updates-div">
+        <div class="update-banner">
+            The system has been updated!<br>
+            To check if any changes have been made, please visit the <strong>Settings → Documentation</strong> menu.
+        </div>
+    </div>
+
+    <!-- ======================================================
+         POPUP DIALOG
+         Used for messages or alerts
+         ====================================================== -->
+    <div id="popup-id-back">
+        <div class="popup-class" id="popup-id">
+            <div>
+                <label id="popup-title-label"></label>
+                <p id="popup-title"></p>
+            </div>
+            <div>
+                <label id="popup-message-label"></label>
+                <p id="popup-message"></p>
+            </div>
+            <div>
+                <button class="popup-button-class" id="popup-button">OK</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- ======================================================
+        FOOTER
+        Displays default version info
+        ====================================================== -->
+    <footer>
+        <p>MagiMagi v1.2.25 | MIT License | © 2025 MagiMagi</p>
+    </footer>
+
+    <!-- ======================================================
+         PAGE STYLES
+         Specific styles for updates banner
+         ====================================================== -->
+    <style>
+        .updates-div{
+            background-color: azure;
+            margin-bottom: 60px;
+        }
+        .update-banner {
+            background: linear-gradient(135deg, #6dd5fa, #ffffff); /* light cheerful blue */
+            border: 2px solid #4da6ff;
+            color: #003366;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            text-align: center;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+
+    <!-- ======================================================
+         PAGE-SPECIFIC JAVASCRIPT
+         Handles login and UI interactions
+         ====================================================== -->
+    <script src="{{url_for('static',filename='js/main.js')}}" type="module"></script>
+
+{% endblock %}

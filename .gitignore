@@ -1,0 +1,46 @@
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+.env
+.env.local
+.env.*.local
+
+# =========================
+# Python / Flask
+# =========================
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+instance/
+.webassets-cache
+*.log
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Puppeteer / WhatsApp
+# =========================
+**/node_modules/puppeteer-core/.local-chromium/
+
+# =========================
+# IDEs / OS
+# =========================
+.vscode/
+.idea/
+.DS_Store
+*.swp
+Thumbs.db
+# WhatsApp Web.js session
+.wwebjs_auth/
